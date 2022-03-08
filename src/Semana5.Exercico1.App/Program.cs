@@ -5,7 +5,7 @@ using Semana5.Exercico1.Enums;
 Console.WriteLine("Hello, World!");
 
 
-var cartaoCredito = new CartaoCredito("Dariel Credito", "15128356127435164", 123, new DateOnly(2022, 11, 1), BandeiraEnum.Visa, 1500);
+var cartaoCredito = new CartaoCredito("Dariel Credito", "15128356127435164", 123, new DateOnly(2022, 11, 1), BandeiraEnum.Cielo, 1500);
 var cartaoAlimentacao = new CartaoAlimentacao("Dariel Alimentação", "15128356127435164", 123, new DateOnly(2022, 10, 1), BandeiraEnum.Visa, new DateOnly(2022, 3, 1), 450);
 
 Console.WriteLine($"Cartão: {cartaoCredito.Nome}, No: {cartaoCredito.Numero}, DataValidade: {cartaoCredito.DataValidade:dd-MM-yy}, Limite: {cartaoCredito.Limite}, Saldo: {cartaoCredito.CalcularSaldo(150)}, Tipo: {cartaoCredito.RetornarTipoCartao()}");

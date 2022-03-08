@@ -22,6 +22,12 @@ namespace Semana5.Exercico1.Entidades
             Bandeira = bandeira;
         }
 
+        protected Cartao(string nome, string numero)
+        {
+            Nome = nome;
+            Numero = numero;
+        }
+
         public virtual TipoCartaoEnum RetornarTipoCartao() => TipoCartaoEnum.Credito;
 
         public abstract decimal CalcularSaldo(decimal valor);
