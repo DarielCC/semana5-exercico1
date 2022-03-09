@@ -14,7 +14,7 @@ namespace Semana5.Exercico1.Entidades
         public decimal SaldoInicial { get; private set; }
         public IList<Transacao> Transacoes { get; private set; }
 
-        protected Conta(string descricao, string numeroConta, decimal saldoInicial)
+        public Conta(string descricao, string numeroConta, decimal saldoInicial)
         {
             Descricao = descricao;
             NumeroConta = numeroConta;
@@ -23,7 +23,7 @@ namespace Semana5.Exercico1.Entidades
             Transacoes = new List<Transacao>();
         }
 
-        public decimal CalcularSaldo(DateOnly data)
+        public virtual decimal CalcularSaldo(DateOnly data)
         {
             var transacoes = Transacoes.Where(trans => trans.Data <= data);
 
@@ -31,7 +31,5 @@ namespace Semana5.Exercico1.Entidades
                 transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Receita).Sum(trans => trans.Valor) -
                 transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Despesa).Sum(trans => trans.Valor);
         }
-
-        public void AdicionarTransacao(Transacao transacao) => Transacoes.Add(transacao);
     }
 }

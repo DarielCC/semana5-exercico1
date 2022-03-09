@@ -13,5 +13,12 @@ namespace Semana5.Exercico1.Entidades
         public ContaPoupanca(string descricao, string numeroConta, decimal saldoInicial, decimal rendimento) 
                       : base(descricao, numeroConta, saldoInicial)
             => Rendimento = rendimento;
+
+        public override decimal CalcularSaldo(DateOnly data)
+        {
+            var saldo = base.CalcularSaldo(data);
+
+            return saldo + (saldo * Rendimento / 100);
+        }
     }
 }
