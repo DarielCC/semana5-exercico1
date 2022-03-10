@@ -1,9 +1,5 @@
 ﻿using Semana5.Exercico1.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Semana5.Exercico1.Models;
 
 namespace Semana5.Exercico1.Interfaces
 {
@@ -11,5 +7,9 @@ namespace Semana5.Exercico1.Interfaces
     {
         decimal RetornarSaldoConta(string numeroConta, DateOnly data);
         Conta RetornarConta(string numeroConta);
+        decimal RetornarTotalDespesas(string numeroConta, DateOnly data);
+        decimal RetornarTotalReceitas(string numeroConta, DateOnly data);
+        decimal RetornarSaldoInicial(string numeroConta);
+        IEnumerable<TransacoesPorCategoriaModel> RetornarTransacoesAgrupadasPorCategorias(string numeroConta, DateOnly data);
     }
 }

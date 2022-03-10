@@ -16,7 +16,7 @@ namespace Semana5.Exercico1.Entidades
         {
             DataRecarga = dataRecarga;
 
-            if(valorRecarga < 0)
+            if (valorRecarga < 0)
             {
                 throw new ArgumentException("Valor não pode ser zero");
             }
