@@ -30,6 +30,6 @@ namespace Semana5.Exercico1.Entidades
 
         public virtual TipoCartaoEnum RetornarTipoCartao() => TipoCartaoEnum.Credito;
 
-        public abstract decimal CalcularSaldo(decimal valor);
+        public abstract decimal CalcularSaldo(DateOnly data);
     }
 }

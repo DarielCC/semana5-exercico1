@@ -6,6 +6,7 @@ namespace Semana5.Exercico1.Entidades
     {
         public DateOnly DataRecarga { get; private set; }
         public decimal ValorRecarga { get; private set; }
+        public IList<Transacao> Transacoes { get; private set; }
 
         public CartaoAlimentacao() { }
 
@@ -21,6 +22,8 @@ namespace Semana5.Exercico1.Entidades
                 throw new ArgumentException("Valor não pode ser zero");
             }
             ValorRecarga = valorRecarga;
+
+            Transacoes = new List<Transacao>();
         }
 
         public CartaoAlimentacao(string nome, string numero, decimal valorRecarga)
@@ -35,6 +38,13 @@ namespace Semana5.Exercico1.Entidades
 
         public override TipoCartaoEnum RetornarTipoCartao() => TipoCartaoEnum.Alimentacao;
 
-        public override decimal CalcularSaldo(decimal valor) => ValorRecarga - valor;
+        public override decimal CalcularSaldo(DateOnly data)
+        {
+            var transacoes = Transacoes.Where(trans => trans.Data <= data);
+
+            return ValorRecarga +
+                transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Receita).Sum(trans => trans.Valor) -
+                transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Despesa).Sum(trans => trans.Valor);
+        }
     }
 }

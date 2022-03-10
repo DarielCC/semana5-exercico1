@@ -25,7 +25,7 @@ namespace Semana5.Exercico1.Entidades
 
         public virtual decimal CalcularSaldo(DateOnly data)
         {
-            IEnumerable<Transacao>? transacoes = Transacoes.Where(trans => trans.Data <= data);
+            var transacoes = Transacoes.Where(trans => trans.Data <= data);
 
             return SaldoInicial +
                 transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Receita).Sum(trans => trans.Valor) -
