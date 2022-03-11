@@ -1,45 +1,152 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.Extensions.DependencyInjection;
+using Semana5.Exercico1.App;
 using Semana5.Exercico1.Entidades;
 using Semana5.Exercico1.Enums;
+using Semana5.Exercico1.Interfaces;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Minha aplicação financeira!");
+Console.WriteLine("----------------------------------------");
 
+#region Resolvendo Injeção de Dependencia
 
-var cartaoCredito = new CartaoCredito("Dariel Credito", "15128356127435164", 123, new DateOnly(2022, 11, 1), BandeiraEnum.Cielo, 1500);
-var cartaoAlimentacao = new CartaoAlimentacao("Dariel Alimentação", "15128356127435164", 123, new DateOnly(2022, 10, 1), BandeiraEnum.Visa, new DateOnly(2022, 3, 1), 450);
+var serviceCollection = new ServiceCollection();
+serviceCollection.AddScoped<ICategoriaRepository, CategoriaRepository>();
+serviceCollection.AddScoped<IMovimentacaoContaRepository, MovimentacaoContaRepository>();
+serviceCollection.AddScoped<IMovimentacaoCartaoAlimentacaoRepository, MovimentacaoCartaoAlimentacaoRepository>();
+var serviceProvider = serviceCollection.BuildServiceProvider();
+var _movimentacaoContaRepository = serviceProvider.GetService<IMovimentacaoContaRepository>();
+var _movimentacaoCartaoRepository = serviceProvider.GetService<IMovimentacaoCartaoAlimentacaoRepository>();
+var _categoriaRepository = serviceProvider.GetService<ICategoriaRepository>();
 
-Console.WriteLine($"Cartão: {cartaoCredito.Nome}, No: {cartaoCredito.Numero}, DataValidade: {cartaoCredito.DataValidade:dd-MM-yy}, Limite: {cartaoCredito.Limite}, Saldo: {cartaoCredito.CalcularSaldo(DateOnly.FromDateTime(DateTime.Now.AddDays(-1)))}, Tipo: {cartaoCredito.RetornarTipoCartao()}");
-Console.WriteLine($"Cartão: {cartaoAlimentacao.Nome}, No: {cartaoAlimentacao.Numero}, DataValidade: {cartaoAlimentacao.DataValidade:dd-MM-yy}, DataRecarga: {cartaoAlimentacao.DataRecarga:dd-MM-yy}, ValorRecarga: {cartaoAlimentacao.ValorRecarga:N2}, Saldo: {cartaoAlimentacao.CalcularSaldo(DateOnly.FromDateTime(DateTime.Now.AddDays(-1)))}, Tipo: {cartaoAlimentacao.RetornarTipoCartao()}");
+var _aplicacaoFinanceira = new AplicacaoFinanceira(
+                _movimentacaoContaRepository,
+                _movimentacaoCartaoRepository,
+                _categoriaRepository);
 
-var categoria = new Categoria("Salário", TipoCategoriaEnum.Receita);
-var transacao = new Transacao("Cobro salário", 1500, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), categoria);
+#endregion
 
-var categoria1 = new Categoria("Mercado", TipoCategoriaEnum.Despesa);
-var transacao1 = new Transacao("Compra do mês", 500, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), categoria1);
-var transacao2 = new Transacao("Compra da semana", 100, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), categoria1);
+#region Funcionalidades Categoria
 
-var conta = new Conta("Conta NuBanck", "12344", 1000);
+Console.WriteLine("Funcionalidades Categoria");
+Console.WriteLine("----------------------------------------");
 
-var movimentacao = new Movimentacao();
-movimentacao.AdicionarConta(conta);
-movimentacao.AdicionarTransacao(conta.NumeroConta, transacao);
+_aplicacaoFinanceira.CriarCategoria("1", "Salário", TipoCategoriaEnum.Receita);
 
-var saldoConta = movimentacao.RetornarSaldoConta(conta.NumeroConta, DateOnly.FromDateTime(DateTime.Now));
+Console.WriteLine("----------------------------------------");
 
-Console.WriteLine($"O saldo da cta {conta.NumeroConta} é de R$ {saldoConta:N2}");
+_aplicacaoFinanceira.CriarCategoria("2", "Aluguel", TipoCategoriaEnum.Despesa);
 
-movimentacao.AdicionarTransacao(conta.NumeroConta, transacao1);
-movimentacao.AdicionarTransacao(conta.NumeroConta, transacao2);
-var saldoConta1 = movimentacao.RetornarSaldoConta(conta.NumeroConta, DateOnly.FromDateTime(DateTime.Now));
+Console.WriteLine("----------------------------------------");
 
-Console.WriteLine($"O saldo da cta {conta.NumeroConta} é de R$ {saldoConta1:N2}");
+_aplicacaoFinanceira.CriarCategoria("3", "Condomínio", TipoCategoriaEnum.Despesa);
 
-var transacoesPorCategoria = movimentacao.RetornarTransacoesAgrupadasPorCategorias(conta.NumeroConta, DateOnly.FromDateTime(DateTime.Now));
+Console.WriteLine("----------------------------------------");
 
-foreach(var transacaoPorCategoria in transacoesPorCategoria)
-{
-    Console.WriteLine($"A categoria {transacaoPorCategoria.Categoria.Nome} tem {transacaoPorCategoria.Transacoes.Count()} transações");
+_aplicacaoFinanceira.CriarCategoria("4", "Combustível", TipoCategoriaEnum.Despesa);
 
-    foreach(var transacaoCat in transacaoPorCategoria.Transacoes)
-        Console.WriteLine($"Transação: {transacaoCat.Descricao}, Valor: R${transacaoCat.Valor}");
-}
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarCategoria("5", "Compras", TipoCategoriaEnum.Despesa);
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarCategoria("6", "Limpesa", TipoCategoriaEnum.Despesa);
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarCategoria("7", "Investimentos", TipoCategoriaEnum.Receita);
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarCategoria("8", "Supermercado", TipoCategoriaEnum.Despesa);
+
+Console.WriteLine("----------------------------------------");
+
+#endregion
+
+#region Funcionalidades Conta
+
+Console.WriteLine("Funcionalidades Conta");
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarConta("1", "Conta NuBank", "12344", 1000);
+
+_aplicacaoFinanceira.RetornarSaldoConta("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarConta("2", "Conta Poupança", "45674", 13000, 3);
+
+_aplicacaoFinanceira.RetornarSaldoConta("2", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoConta("1", "Cobro salário", 1500, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "1", "1");
+
+_aplicacaoFinanceira.RetornarSaldoConta("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoConta("2", "Pagamento aluguel", 500, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "2", "1");
+
+_aplicacaoFinanceira.RetornarSaldoConta("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoConta("3", "Compra mercado", 100, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "3", "1");
+
+_aplicacaoFinanceira.RetornarSaldoConta("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoConta("4", "Compra mercado", 250, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "3", "1");
+
+_aplicacaoFinanceira.RetornarSaldoConta("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoConta("5", "Guardando dinheiro", 1500, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "7", "2");
+
+_aplicacaoFinanceira.RetornarSaldoConta("2", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+Console.WriteLine("Funcionalidades Transação");
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.RetornarTransacoesPorCategorias("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+#endregion
+
+#region Funcionalidades Cartão
+
+Console.WriteLine("Funcionalidades Cartão");
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.CriarCartao("1", "Dariel Corrales", "12344", 123, DateOnly.FromDateTime(DateTime.Now.AddDays(100)), BandeiraEnum.MasterCard, DateOnly.FromDateTime(DateTime.Now), 580);
+
+_aplicacaoFinanceira.RetornarSaldoCartao("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoCartao("1", "Compra Big Iguatemi", 210, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "8", "1");
+
+_aplicacaoFinanceira.RetornarSaldoCartao("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoCartao("2", "Compra Almoço", 35, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "8", "1");
+
+_aplicacaoFinanceira.RetornarSaldoCartao("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+_aplicacaoFinanceira.AdicionarTransacaoCartao("3", "Compra pizza", 59, DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "8", "1");
+
+_aplicacaoFinanceira.RetornarSaldoCartao("1", DateOnly.FromDateTime(DateTime.Now));
+
+Console.WriteLine("----------------------------------------");
+
+#endregion

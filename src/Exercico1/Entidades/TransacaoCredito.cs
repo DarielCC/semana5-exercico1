@@ -5,8 +5,8 @@ namespace Semana5.Exercico1.Entidades
     {
         public int NumeroParcela { get; private set; }
 
-        public TransacaoCredito(string descricao, decimal valor, DateOnly data, Categoria categoria, int numeroParcelas) 
-            : base(descricao, valor, data, categoria)
+        public TransacaoCredito(string id, string descricao, decimal valor, DateOnly data, Categoria categoria, int numeroParcelas)
+            : base(id, descricao, valor, data, categoria)
             => NumeroParcela = numeroParcelas;
     }
 }

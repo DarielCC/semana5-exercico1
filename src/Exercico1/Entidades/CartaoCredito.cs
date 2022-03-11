@@ -8,9 +8,9 @@ namespace Semana5.Exercico1.Entidades
 
         public decimal Limite { get; private set; }
 
-        public CartaoCredito(string nome, string numero, int codigoSeguranca,
+        public CartaoCredito(string id, string nome, string numero, int codigoSeguranca,
                       DateOnly dataValidade, BandeiraEnum bandeira, decimal limite)
-             : base(nome, numero, codigoSeguranca, dataValidade, bandeira)
+             : base(id, nome, numero, codigoSeguranca, dataValidade, bandeira)
         {
             Limite = limite;
             Transacoes = new List<TransacaoCredito>();
@@ -18,7 +18,7 @@ namespace Semana5.Exercico1.Entidades
 
         public override decimal CalcularSaldo(DateOnly data)
         {
-            var transacoes = Transacoes.Where(trans => trans.Data <= data);
+            IEnumerable<TransacaoCredito>? transacoes = Transacoes.Where(trans => trans.Data <= data);
 
             return Limite +
                 transacoes.Where(trans => trans.Categoria.TipoCategoria == TipoCategoriaEnum.Receita).Sum(trans => trans.Valor) -

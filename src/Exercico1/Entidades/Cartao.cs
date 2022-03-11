@@ -2,7 +2,7 @@
 
 namespace Semana5.Exercico1.Entidades
 {
-    public abstract class Cartao
+    public abstract class Cartao : EntidadeBase
     {
         public string Nome { get; private set; }
         public string Numero { get; private set; }
@@ -12,8 +12,8 @@ namespace Semana5.Exercico1.Entidades
 
         protected Cartao() { }
 
-        protected Cartao(string nome, string numero, int codigoSeguranca,
-                      DateOnly dataValidade, BandeiraEnum bandeira)
+        protected Cartao(string id, string nome, string numero, int codigoSeguranca,
+                      DateOnly dataValidade, BandeiraEnum bandeira) : base(id)
         {
             Nome = nome;
             Numero = numero;

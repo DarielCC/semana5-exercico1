@@ -4,8 +4,8 @@
     {
         public decimal Rendimento { get; private set; }
 
-        public ContaPoupanca(string descricao, string numeroConta, decimal saldoInicial, decimal rendimento)
-                      : base(descricao, numeroConta, saldoInicial)
+        public ContaPoupanca(string id, string descricao, string numeroConta, decimal saldoInicial, decimal rendimento)
+                      : base(id, descricao, numeroConta, saldoInicial)
             => Rendimento = rendimento;
 
         public override decimal CalcularSaldo(DateOnly data)
